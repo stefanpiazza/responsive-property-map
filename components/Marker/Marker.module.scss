@@ -1,0 +1,15 @@
+.marker {
+  border-radius: 50%;
+  background-color: #222;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #fff;
+
+  &.is-active {
+    background-color: #dc4c3f;
+  }
+
+  &.is-hover {
+    background-color: #3fcfdc;
+  }
+}

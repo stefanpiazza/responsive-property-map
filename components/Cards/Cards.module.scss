@@ -1,0 +1,37 @@
+.cards {
+  grid-area: cards;
+  position: relative;
+}
+
+.cards__wrapper {
+  width: 100vw;
+
+  @media (min-width: 768px) {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+  }
+}
+
+.cards__list {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    flex-direction: column;
+    overflow: auto scroll;
+    height: 100%;
+  }
+}
+
+.cards__list-item {
+  min-width: 100%;
+  padding: 1rem;
+
+  @media (min-width: 768px) {
+    padding: 0 1rem 1rem;
+  }
+}
