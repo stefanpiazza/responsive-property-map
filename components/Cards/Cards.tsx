@@ -1,4 +1,5 @@
 import styles from "./Cards.module.scss";
+import cx from "classnames";
 
 import React, { useRef, useEffect } from "react";
 import { Listing } from "../../shared/types";
@@ -38,10 +39,15 @@ const Cards = ({
     }
   }, [activeListingId]);
 
+  const cardsListClassName = cx([
+    styles["cards__list"],
+    activeListingId == -1 ? styles["is-hidden"] : null,
+  ]);
+
   return (
     <div className={styles["cards"]}>
       <div className={styles["cards__wrapper"]}>
-        <ul className={styles["cards__list"]} ref={cardsListRef}>
+        <ul className={cardsListClassName} ref={cardsListRef}>
           {listings.map((listing, index) => {
             const { id } = listing;
 

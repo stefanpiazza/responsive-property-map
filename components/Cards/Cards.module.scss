@@ -25,6 +25,14 @@
     overflow: auto scroll;
     height: 100%;
   }
+
+  &.is-hidden {
+    display: none;
+
+    @media (min-width: 768px) {
+      display: flex;
+    }
+  }
 }
 
 .cards__list-item {
