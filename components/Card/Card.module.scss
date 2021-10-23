@@ -4,6 +4,7 @@
   border: 1px solid #222;
   border-radius: 1rem;
   overflow: hidden;
+  cursor: pointer;
 
   &.is-active {
     @media (min-width: 768px) {
