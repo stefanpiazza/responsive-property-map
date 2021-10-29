@@ -35,11 +35,7 @@ const Card = ({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <div className={styles["card__images"]}>
-        <div className={styles["card__image"]}></div>
-        <div className={styles["card__image"]}></div>
-        <div className={styles["card__image"]}></div>
-      </div>
+      <div className={styles["card__image"]}></div>
       <div className={styles["card__content"]}>
         <p className={styles["card__title"]}>{title}</p>
         <p className={styles["card__address"]}>{address}</p>

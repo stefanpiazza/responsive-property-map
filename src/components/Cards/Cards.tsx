@@ -72,17 +72,17 @@ const Cards = ({
 
     const { scrollWidth, scrollHeight } = current;
 
-    if (scrollWidth < scrollHeight) {
-      const activeListItem = current.childNodes[
-        listings.findIndex((listing) => listing.id === activeListingId)
-      ] as HTMLLIElement;
+    const behaviour = scrollWidth < scrollHeight ? "smooth" : "auto";
 
-      if (activeListItem) {
-        if (!isElementInView(activeListItem)) {
-          activeListItem.scrollIntoView({
-            behavior: "smooth",
-          });
-        }
+    const activeListItem = current.childNodes[
+      listings.findIndex((listing) => listing.id === activeListingId)
+    ] as HTMLLIElement;
+
+    if (activeListItem) {
+      if (!isElementInView(activeListItem)) {
+        activeListItem.scrollIntoView({
+          behavior: behaviour,
+        });
       }
     }
   }, [activeListingId]);
