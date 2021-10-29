@@ -3,7 +3,6 @@ import cx from "classnames";
 
 import React, { useRef, useEffect, useState } from "react";
 import Card from "../Card";
-import useIsScrolling from "../../hooks/useIsScrolling";
 import { Listing } from "../../shared/types";
 import isElementInView from "../../utils/isElementInView";
 
@@ -29,50 +28,10 @@ const Cards = ({
 
   const cardsListRef = useRef<HTMLUListElement>(null);
 
-  const [isInteracting, setIsInteracting] = useState(false);
-
-  const { x, isScrollingX } = useIsScrolling(cardsListRef);
+  const [, setIsInteracting] = useState(false);
 
   useEffect(() => {
     const { current } = cardsListRef;
-
-    const { scrollLeft, offsetWidth, scrollWidth, scrollHeight } = current;
-
-    if (scrollWidth > scrollHeight) {
-      const index = Math.round(scrollLeft / offsetWidth);
-
-      setActiveListingId(listings[index].id);
-    }
-  }, [x]);
-
-  useEffect(() => {
-    const { current } = cardsListRef;
-
-    const { scrollWidth, scrollHeight } = current;
-
-    if (scrollWidth > scrollHeight) {
-      if (!isInteracting && !isScrollingX) {
-        const activeListItem = current.childNodes[
-          listings.findIndex((listing) => listing.id === activeListingId)
-        ] as HTMLLIElement;
-
-        if (activeListItem) {
-          if (!isElementInView(activeListItem)) {
-            activeListItem.scrollIntoView({
-              behavior: "smooth",
-            });
-          }
-        }
-      }
-    }
-  }, [isInteracting, isScrollingX]);
-
-  useEffect(() => {
-    const { current } = cardsListRef;
-
-    const { scrollWidth, scrollHeight } = current;
-
-    const behaviour = scrollWidth < scrollHeight ? "smooth" : "auto";
 
     const activeListItem = current.childNodes[
       listings.findIndex((listing) => listing.id === activeListingId)
@@ -80,9 +39,7 @@ const Cards = ({
 
     if (activeListItem) {
       if (!isElementInView(activeListItem)) {
-        activeListItem.scrollIntoView({
-          behavior: behaviour,
-        });
+        activeListItem.scrollIntoView();
       }
     }
   }, [activeListingId]);
