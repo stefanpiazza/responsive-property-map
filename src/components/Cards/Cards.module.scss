@@ -17,7 +17,7 @@
 .cards__list {
   display: flex;
   flex-direction: row;
-  overflow: hidden;
+  overflow: scroll auto;
   width: 100%;
 
   @media (min-width: 768px) {
