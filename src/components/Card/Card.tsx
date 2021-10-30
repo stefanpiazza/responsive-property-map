@@ -8,7 +8,7 @@ type CardProps = {
   isHover: boolean;
   listing: Listing;
   onClick: () => void;
-  onMouseEnter: () => void;
+  onMouseOver: () => void;
   onMouseLeave: () => void;
 };
 
@@ -17,7 +17,7 @@ const Card = ({
   isHover,
   listing,
   onClick,
-  onMouseEnter,
+  onMouseOver,
   onMouseLeave,
 }: CardProps) => {
   const { title, address, price } = listing;
@@ -32,7 +32,7 @@ const Card = ({
     <div
       className={className}
       onClick={onClick}
-      onMouseEnter={onMouseEnter}
+      onMouseOver={onMouseOver}
       onMouseLeave={onMouseLeave}
     >
       <div className={styles["card__image"]}></div>

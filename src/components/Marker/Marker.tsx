@@ -11,7 +11,7 @@ type MarkerProps = {
     lng: number;
   };
   onClick: () => void;
-  onMouseEnter: () => void;
+  onMouseOver: () => void;
   onMouseLeave: () => void;
 };
 
@@ -20,7 +20,7 @@ const Marker = ({
   isHover,
   position,
   onClick,
-  onMouseEnter,
+  onMouseOver,
   onMouseLeave,
 }: MarkerProps) => {
   const className = cx([
@@ -37,7 +37,7 @@ const Marker = ({
       <div
         className={className}
         onClick={onClick}
-        onMouseEnter={onMouseEnter}
+        onMouseOver={onMouseOver}
         onMouseLeave={onMouseLeave}
       />
     </GoogleOverlayView>

@@ -81,7 +81,7 @@ const Map = ({
                 isHover={isHover}
                 position={position}
                 onClick={() => setActiveListingId(id)}
-                onMouseEnter={() => setHoverListingId(id)}
+                onMouseOver={() => setHoverListingId(id)}
                 onMouseLeave={() => setHoverListingId(-1)}
               />
             );
