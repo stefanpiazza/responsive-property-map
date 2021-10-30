@@ -1,10 +1,12 @@
 import styles from "./Cards.module.scss";
 import cx from "classnames";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import Card from "../Card";
 import { Listing } from "../../shared/types";
 import isElementInView from "../../utils/isElementInView";
+import useWindowSize from "../../hooks/useWindowSize";
+import useOnScreen from "../../hooks/useOnScreen";
 
 type CardsProps = {
   listings: Listing[];
@@ -27,8 +29,14 @@ const Cards = ({
   ]);
 
   const cardsListRef = useRef<HTMLUListElement>(null);
+  const cardsListItemRef = useRef<Array<HTMLLIElement>>([]);
 
-  const [, setIsInteracting] = useState(false);
+  const entry = useOnScreen(cardsListItemRef, { threshold: 0.6 });
+
+  const { width } = useWindowSize();
+  const isMobileView = useCallback(() => {
+    return width < 768;
+  }, [width]);
 
   useEffect(() => {
     const { current } = cardsListRef;
@@ -37,28 +45,31 @@ const Cards = ({
       listings.findIndex((listing) => listing.id === activeListingId)
     ] as HTMLLIElement;
 
-    if (activeListItem) {
-      if (!isElementInView(activeListItem)) {
-        activeListItem.scrollIntoView();
-      }
+    if (!activeListItem) {
+      return;
+    }
+
+    if (!isElementInView(activeListItem)) {
+      activeListItem.scrollIntoView({ behavior: "smooth" });
     }
   }, [activeListingId]);
+
+  useEffect(() => {
+    if (!isMobileView() || !entry) {
+      return;
+    }
+
+    if (entry.isIntersecting) {
+      setHoverListingId(
+        parseInt((entry.target as HTMLElement).dataset.listingId, 10)
+      );
+    }
+  }, [entry, isMobileView]);
 
   return (
     <div className={styles["cards"]}>
       <div className={styles["cards__wrapper"]}>
-        <ul
-          className={cardsListClassName}
-          ref={cardsListRef}
-          onMouseDown={() => {
-            setIsInteracting(true);
-          }}
-          onMouseUp={() => {
-            setIsInteracting(false);
-          }}
-          onTouchStart={() => setIsInteracting(true)}
-          onTouchEnd={() => setIsInteracting(false)}
-        >
+        <ul className={cardsListClassName} ref={cardsListRef}>
           {listings.map((listing, index) => {
             const { id } = listing;
 
@@ -66,13 +77,20 @@ const Cards = ({
             const isHover = id === hoverListingId;
 
             return (
-              <li className={styles["cards__list-item"]} key={index}>
+              <li
+                className={styles["cards__list-item"]}
+                key={index}
+                ref={(element) => {
+                  cardsListItemRef.current[index] = element;
+                }}
+                data-listing-id={id}
+              >
                 <Card
                   isActive={isActive}
                   isHover={isHover}
                   listing={listing}
                   onClick={() => setActiveListingId(id)}
-                  onMouseEnter={() => setHoverListingId(id)}
+                  onMouseOver={() => setHoverListingId(id)}
                   onMouseLeave={() => setHoverListingId(-1)}
                 />
               </li>

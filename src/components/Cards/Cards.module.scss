@@ -17,12 +17,14 @@
 .cards__list {
   display: flex;
   flex-direction: row;
-  overflow: hidden;
+  overflow: scroll auto;
+  scroll-snap-type: both mandatory;
   width: 100%;
 
   @media (min-width: 768px) {
     flex-direction: column;
     overflow: auto scroll;
+    scroll-snap-type: none;
     height: 100%;
   }
 
@@ -38,6 +40,7 @@
 .cards__list-item {
   min-width: 100%;
   padding: 1rem;
+  scroll-snap-align: start;
 
   @media (min-width: 768px) {
     padding: 0 1rem 1rem;
