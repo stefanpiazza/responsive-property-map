@@ -1,12 +1,13 @@
 import styles from "./Cards.module.scss";
 import cx from "classnames";
 
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback, useState } from "react";
 import Card from "../Card";
 import { Listing } from "../../shared/types";
 import isElementInView from "../../utils/isElementInView";
 import useWindowSize from "../../hooks/useWindowSize";
 import useOnScreen from "../../hooks/useOnScreen";
+import useIsScrolling from "../../hooks/useIsScrolling";
 
 type CardsProps = {
   listings: Listing[];
@@ -41,16 +42,37 @@ const Cards = ({
   useEffect(() => {
     const { current } = cardsListRef;
 
-    const activeListItem = current.childNodes[
-      listings.findIndex((listing) => listing.id === activeListingId)
-    ] as HTMLLIElement;
+    if (!current) {
+      return;
+    }
+
+    let activeListItem;
+
+    if (!isMobileView()) {
+      activeListItem = current.childNodes[
+        listings.findIndex((listing) => listing.id === activeListingId)
+      ] as HTMLLIElement;
+    } else {
+      if (!entry) {
+        return;
+      }
+
+      if (
+        activeListingId !==
+        parseInt((entry.target as HTMLElement).dataset.listingId, 10)
+      ) {
+        activeListItem = current.childNodes[
+          listings.findIndex((listing) => listing.id === activeListingId)
+        ] as HTMLLIElement;
+      }
+    }
 
     if (!activeListItem) {
       return;
     }
 
     if (!isElementInView(activeListItem)) {
-      activeListItem.scrollIntoView({ behavior: "smooth" });
+      activeListItem.scrollIntoView();
     }
   }, [activeListingId]);
 
@@ -60,7 +82,7 @@ const Cards = ({
     }
 
     if (entry.isIntersecting) {
-      setHoverListingId(
+      setActiveListingId(
         parseInt((entry.target as HTMLElement).dataset.listingId, 10)
       );
     }
@@ -69,7 +91,12 @@ const Cards = ({
   return (
     <div className={styles["cards"]}>
       <div className={styles["cards__wrapper"]}>
-        <ul className={cardsListClassName} ref={cardsListRef}>
+        <ul
+          className={cardsListClassName}
+          ref={cardsListRef}
+          onMouseDown={() => setIsInteracting(true)}
+          onMouseUp={() => setIsInteracting(false)}
+        >
           {listings.map((listing, index) => {
             const { id } = listing;
 
