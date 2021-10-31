@@ -42,30 +42,20 @@ const Cards = ({
   useEffect(() => {
     const { current } = cardsListRef;
 
-    if (!current) {
+    if (!current || !entry) {
       return;
     }
 
-    let activeListItem;
-
-    if (!isMobileView()) {
-      activeListItem = current.childNodes[
-        listings.findIndex((listing) => listing.id === activeListingId)
-      ] as HTMLLIElement;
-    } else {
-      if (!entry) {
-        return;
-      }
-
-      if (
-        activeListingId !==
-        parseInt((entry.target as HTMLElement).dataset.listingId, 10)
-      ) {
-        activeListItem = current.childNodes[
-          listings.findIndex((listing) => listing.id === activeListingId)
-        ] as HTMLLIElement;
-      }
+    if (
+      activeListingId ==
+      parseInt((entry.target as HTMLElement).dataset.listingId, 10)
+    ) {
+      return;
     }
+
+    const activeListItem = current.childNodes[
+      listings.findIndex((listing) => listing.id === activeListingId)
+    ] as HTMLLIElement;
 
     if (!activeListItem) {
       return;
@@ -91,10 +81,7 @@ const Cards = ({
   return (
     <div className={styles["cards"]}>
       <div className={styles["cards__wrapper"]}>
-        <ul
-          className={cardsListClassName}
-          ref={cardsListRef}
-        >
+        <ul className={cardsListClassName} ref={cardsListRef}>
           {listings.map((listing, index) => {
             const { id } = listing;
 
