@@ -94,8 +94,6 @@ const Cards = ({
         <ul
           className={cardsListClassName}
           ref={cardsListRef}
-          onMouseDown={() => setIsInteracting(true)}
-          onMouseUp={() => setIsInteracting(false)}
         >
           {listings.map((listing, index) => {
             const { id } = listing;
