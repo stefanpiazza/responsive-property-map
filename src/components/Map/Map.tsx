@@ -8,7 +8,7 @@ import Marker from "../Marker/Marker";
 
 type MapProps = {
   listings: Listing[];
-  setListings;
+  setListings: (listings: Listing[]) => void;
   activeListingId: number;
   setActiveListingId: (activeListingId: number) => void;
   hoverListingId: number;
@@ -30,11 +30,19 @@ const Map = ({
   };
 
   const onDragEnd = () => {
-    setListings(
-      getListings().filter((listing) => {
-        return map?.getBounds()?.contains(listing.position);
-      })
+    const listings = getListings().filter((listing) => {
+      return map?.getBounds()?.contains(listing.position);
+    });
+
+    setListings(listings);
+
+    const activeListing = listings.find(
+      (listing) => listing.id === activeListingId
     );
+
+    if (!activeListing) {
+      setActiveListingId(-1);
+    }
   };
 
   const { isLoaded, loadError } = useLoadScript({
